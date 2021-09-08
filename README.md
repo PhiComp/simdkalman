@@ -4,7 +4,7 @@
 [![PyPI](https://img.shields.io/pypi/v/simdkalman.svg)](https://pypi.python.org/pypi/simdkalman)
 [![PyPi downloads](https://img.shields.io/pypi/dm/simdkalman)](https://pypi.python.org/pypi/simdkalman)
 
-Fast Kalman filters in Python leveraging single-instruction multiple-data
+Fast Kalman filters in Python leveraging Single-Instruction Multiple-Data (SIMD)
 vectorization. That is, running _n_ similar Kalman filters on _n_
 independent series of observations. Not to be confused with SIMD processor
 instructions.
@@ -18,12 +18,17 @@ kf = simdkalman.KalmanFilter(
     observation_model = np.array([[1,0]]),
     observation_noise = 1.0)
 
-data = numpy.random.normal(size=(200, 1000))
+data = numpy.random.normal(size=(100))
 
-# smooth and explain existing data
+# predict new data # not really useful in price
+# pred = kf.predict(data, 15)
+
+# smooth and explain existing data # to be used as moving-avg~
 smoothed = kf.smooth(data)
-# predict new data
-pred = kf.predict(data, 15)
+
+plot(data)
+plot(smoothed.observations.mean.data)
+show()
 ```
 See `examples/example.py` for a more comprehensive example and
 [ReadTheDocs](https://simdkalman.readthedocs.io/) for the full documentation.
